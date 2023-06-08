@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
+import { useAuthContext } from '../contexts/authContext';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -16,6 +16,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { NavLink } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
 
 function Copyright(props) {
   return (
@@ -35,18 +36,26 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 function Login() {
+  const UserAuth = 'admin@gmail.com'; // ESTA ES EL CORREO
+  const PasswordAuth = 'root123'; //ESTE ES LA CONTRASEÑA
+  const { login } = useAuthContext();
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+
+  function handleUserChange(event) {
+    setUser(event.target.value);
+  }
+  function handlePasswordChange(event) {
+    setPassword(event.target.value);
+  }
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    if ((user === UserAuth) & (password === PasswordAuth)) {
+      login();
+    }
   };
 
   return (
@@ -158,7 +167,6 @@ function Login() {
                 This is an internal account, contact your supervisor for any
                 questions
               </Typography>
-
               <Box
                 component="form"
                 noValidate
@@ -170,6 +178,7 @@ function Login() {
                   required
                   fullWidth
                   id="email"
+                  onChange={handleUserChange}
                   label="Email"
                   name="email"
                   autoComplete="email"
@@ -179,6 +188,7 @@ function Login() {
                   margin="normal"
                   required
                   fullWidth
+                  onChange={handlePasswordChange}
                   name="password"
                   label="Password"
                   type="password"
@@ -189,27 +199,26 @@ function Login() {
                   control={<Checkbox value="remember" color="primary" />}
                   label="I accept the terms and conditions"
                 />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  /* to="private/home"
+                  component={NavLink}*/
+                  sx={{
+                    mt: 1,
+                    mb: 2,
+                    backgroundColor: '#22406C',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: '8px',
+                  }}
+                >
+                  <span style={{ marginRight: '4px' }}>Log In</span>
+                  <ArrowForwardIcon sx={{ fontSize: '20px', color: 'white' }} />
+                </Button>
               </Box>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                to="/home"
-                component={NavLink}
-                sx={{
-                  mt: 1,
-                  mb: 2,
-                  backgroundColor: '#22406C',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: '8px',
-                  maxWidth: '300px',
-                }}
-              >
-                <span style={{ marginRight: '4px' }}>Log In</span>
-                <ArrowForwardIcon sx={{ fontSize: '20px', color: 'white' }} />
-              </Button>
             </Box>
           </Box>
         </Grid>
