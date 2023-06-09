@@ -47,24 +47,24 @@ function Login() {
     event.preventDefault();
 
     if (user === '' || password === '') {
-      setError('Por favor, ingrese su correo y contraseña.');
+      setError('Please, You must enter Email and Passsword');
       setShowAlert(true);
       return;
     }
     if (!validEmail) {
-      setError('Por favor, ingrese un correo electrónico válido.');
+      setError('Please enter a valid Email.');
       setShowAlert(true);
       return;
     }
     if (!acceptTerms) {
-      setError('Debe aceptar los términos y condiciones para ingresar.');
+      setError('You must accept the Terms and Conditions.');
       setShowAlert(true);
       return;
     }
     if (user === UserAuth && password === PasswordAuth) {
       login();
     } else {
-      setError('Usuario o contraseña incorrectos.');
+      setError('Email or Password is Incorrect.');
       setShowAlert(true);
     }
   };
@@ -76,11 +76,15 @@ function Login() {
         <Grid
           item
           xs={12}
-          sm={3}
+          sm={6}
           md={4}
           sx={{
             backgroundColor: '#22406C',
-            display: 'flex',
+            display: {
+              xs: 'none',
+              sm: 'none',
+              md: 'flex',
+            },
             alignItems: 'center',
             justifyContent: 'center',
             flexDirection: 'column',
@@ -127,7 +131,15 @@ function Login() {
           </Typography>
         </Grid>
 
-        <Grid item xs={12} sm={9} md={8} component={Paper} elevation={6} square>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={8}
+          component={Paper}
+          elevation={6}
+          square
+        >
           <Box
             sx={{
               display: 'flex',

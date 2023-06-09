@@ -51,7 +51,7 @@ export function Navbar({ navArrayLinks }) {
           </IconButton>
 
           <Typography
-            to="/private"
+            to="/hirejob"
             component={NavLink}
             onClick={handleClose}
             variant="h6"
@@ -95,7 +95,7 @@ export function Navbar({ navArrayLinks }) {
                 onClose={handleClose}
               >
                 <MenuItem
-                  to="private/infoUser"
+                  to="infoUser"
                   component={NavLink}
                   onClick={handleClose}
                 >
