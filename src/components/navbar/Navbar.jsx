@@ -15,14 +15,17 @@ import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuthContext } from '../../contexts/authContext';
 
 export function Navbar({ navArrayLinks }) {
+  const { logout } = useAuthContext();
+
   const [open, setOpen] = useState(false);
   const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleChange = (event) => {
-    setAuth(event.target.checked);
+    logout();
   };
 
   const handleMenu = (event) => {
@@ -48,7 +51,7 @@ export function Navbar({ navArrayLinks }) {
           </IconButton>
 
           <Typography
-            to="/home"
+            to="/hirejob"
             component={NavLink}
             onClick={handleClose}
             variant="h6"
@@ -92,15 +95,13 @@ export function Navbar({ navArrayLinks }) {
                 onClose={handleClose}
               >
                 <MenuItem
-                  to="/infoUser"
+                  to="infoUser"
                   component={NavLink}
                   onClick={handleClose}
                 >
                   Perfil
                 </MenuItem>
-                <MenuItem to="/" component={NavLink} onClick={handleClose}>
-                  Cerrar Sesión
-                </MenuItem>
+                <MenuItem onClick={handleChange}>Cerrar Sesión</MenuItem>
               </Menu>
             </div>
           )}

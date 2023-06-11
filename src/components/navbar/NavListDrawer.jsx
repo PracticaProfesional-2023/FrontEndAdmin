@@ -22,7 +22,7 @@ function NavListDrawer({ onClick, navArrayLinks, setOpen }) {
         <List>
           <ListItem style={{ textAlign: 'center', justifyContent: 'center' }}>
             <ListItemButton
-              to="/home"
+              to="/hirejob"
               component={NavLink}
               onClick={() => setOpen(false)}
               sx={{

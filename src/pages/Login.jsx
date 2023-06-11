@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
+import { useAuthContext } from '../contexts/authContext';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -10,43 +10,63 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Logo from '../assets/Logo.png';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Alert from '@mui/material/Alert';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
-import { NavLink } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
+import validator from 'validator';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        HireJob
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
+import { useState } from 'react';
 
 const defaultTheme = createTheme();
 
 function Login() {
+  const UserAuth = 'admin@example.com'; // ESTE ES EL CORREO
+  const PasswordAuth = 'root123'; //ESTE ES LA CONTRASEÑA
+  const { login } = useAuthContext();
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+  const [validEmail, setValidEmail] = useState(true);
+  const [acceptTerms, setAcceptTerms] = useState(false);
+
+  function handleUserChange(event) {
+    setUser(event.target.value);
+    validateEmail(event.target.value);
+  }
+  function handlePasswordChange(event) {
+    setPassword(event.target.value);
+  }
+
+  function validateEmail(email) {
+    const isValid = validator.isEmail(email);
+    setValidEmail(isValid);
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    if (user === '' || password === '') {
+      setError('Please, You must enter Email and Passsword');
+      setShowAlert(true);
+      return;
+    }
+    if (!validEmail) {
+      setError('Please enter a valid Email.');
+      setShowAlert(true);
+      return;
+    }
+    if (!acceptTerms) {
+      setError('You must accept the Terms and Conditions.');
+      setShowAlert(true);
+      return;
+    }
+    if (user === UserAuth && password === PasswordAuth) {
+      login();
+    } else {
+      setError('Email or Password is Incorrect.');
+      setShowAlert(true);
+    }
   };
 
   return (
@@ -56,11 +76,15 @@ function Login() {
         <Grid
           item
           xs={12}
-          sm={3}
+          sm={6}
           md={4}
           sx={{
             backgroundColor: '#22406C',
-            display: 'flex',
+            display: {
+              xs: 'none',
+              sm: 'none',
+              md: 'flex',
+            },
             alignItems: 'center',
             justifyContent: 'center',
             flexDirection: 'column',
@@ -107,7 +131,15 @@ function Login() {
           </Typography>
         </Grid>
 
-        <Grid item xs={12} sm={9} md={8} component={Paper} elevation={6} square>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={8}
+          component={Paper}
+          elevation={6}
+          square
+        >
           <Box
             sx={{
               display: 'flex',
@@ -118,6 +150,22 @@ function Login() {
               bgcolor: '#f5f5f5',
             }}
           >
+            {showAlert && (
+              <Alert
+                severity="error"
+                onClose={() => setShowAlert(false)}
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  mt: 2,
+                  mr: 2,
+                  zIndex: 9999,
+                }}
+              >
+                {error}
+              </Alert>
+            )}
             <Box
               sx={{
                 display: 'flex',
@@ -142,6 +190,7 @@ function Login() {
                 },
                 bgcolor: '#E0E0E0',
                 borderRadius: '8px',
+                position: 'relative', // Añadir posición relativa al contenedor
               }}
             >
               <Typography sx={{ mb: 0, color: 'black', fontSize: '30px' }}>
@@ -158,7 +207,6 @@ function Login() {
                 This is an internal account, contact your supervisor for any
                 questions
               </Typography>
-
               <Box
                 component="form"
                 noValidate
@@ -170,6 +218,7 @@ function Login() {
                   required
                   fullWidth
                   id="email"
+                  onChange={handleUserChange}
                   label="Email"
                   name="email"
                   autoComplete="email"
@@ -179,6 +228,7 @@ function Login() {
                   margin="normal"
                   required
                   fullWidth
+                  onChange={handlePasswordChange}
                   name="password"
                   label="Password"
                   type="password"
@@ -186,30 +236,34 @@ function Login() {
                   autoComplete="current-password"
                 />
                 <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
+                  control={
+                    <Checkbox
+                      value="remember"
+                      color="primary"
+                      checked={acceptTerms} // Valor controlado por el estado
+                      onChange={(event) => setAcceptTerms(event.target.checked)} // Actualizar el estado cuando cambie el valor
+                    />
+                  }
                   label="I accept the terms and conditions"
                 />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    mt: 1,
+                    mb: 2,
+                    backgroundColor: '#22406C',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: '8px',
+                  }}
+                >
+                  <span style={{ marginRight: '4px' }}>Log In</span>
+                  <ArrowForwardIcon sx={{ fontSize: '20px', color: 'white' }} />
+                </Button>
               </Box>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                to="/home"
-                component={NavLink}
-                sx={{
-                  mt: 1,
-                  mb: 2,
-                  backgroundColor: '#22406C',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: '8px',
-                  maxWidth: '300px',
-                }}
-              >
-                <span style={{ marginRight: '4px' }}>Log In</span>
-                <ArrowForwardIcon sx={{ fontSize: '20px', color: 'white' }} />
-              </Button>
             </Box>
           </Box>
         </Grid>
