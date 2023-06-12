@@ -20,8 +20,6 @@ import { useState } from 'react';
 const defaultTheme = createTheme();
 
 function Login() {
-  const UserAuth = 'admin@example.com'; // ESTE ES EL CORREO
-  const PasswordAuth = 'root123'; //ESTE ES LA CONTRASEÑA
   const { login } = useAuthContext();
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
@@ -30,41 +28,54 @@ function Login() {
   const [validEmail, setValidEmail] = useState(true);
   const [acceptTerms, setAcceptTerms] = useState(false);
 
+  // Maneja el cambio en el campo de usuario
   function handleUserChange(event) {
     setUser(event.target.value);
     validateEmail(event.target.value);
   }
+
+  // Maneja el cambio en el campo de contraseña
   function handlePasswordChange(event) {
     setPassword(event.target.value);
   }
 
+  // Valida el formato del correo electrónico
   function validateEmail(email) {
     const isValid = validator.isEmail(email);
     setValidEmail(isValid);
   }
 
-  const handleSubmit = (event) => {
+  // Maneja el envío del formulario
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Verifica si se ingresó un usuario y contraseña en los campos
     if (user === '' || password === '') {
-      setError('Please, You must enter Email and Passsword');
+      setError('Please, You must enter Email and Password');
       setShowAlert(true);
       return;
     }
+
+    // Verifica si el correo electrónico es válido
     if (!validEmail) {
       setError('Please enter a valid Email.');
       setShowAlert(true);
       return;
     }
+
+    // Verifica si se aceptaron los términos y condiciones
     if (!acceptTerms) {
       setError('You must accept the Terms and Conditions.');
       setShowAlert(true);
       return;
     }
-    if (user === UserAuth && password === PasswordAuth) {
-      login();
-    } else {
-      setError('Email or Password is Incorrect.');
+
+    try {
+      // Llama a la función de inicio de sesión proporcionando el correo y contraseña
+      await login(user, password);
+    } catch (error) {
+      // Captura cualquier error que ocurra durante el inicio de sesión y muestra un mensaje de error
+      setError(error.message);
       setShowAlert(true);
     }
   };
