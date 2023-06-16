@@ -1,26 +1,27 @@
 import { Container } from '@mui/material';
 import React from 'react';
 
-function ApplicationTracking() {
+const ApplicationTracking = () => {
   return (
     <>
       <Container sx={{ mt: 5, mb: 5 }}>
         <div
           style={{
-            backgroundColor: 'black',
-            color: 'white',
+            color: 'black',
+            backgroundColor: 'thistle',
             height: '30em',
             textAlign: 'center',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            flexDirection: 'column',
           }}
         >
-          <h1>Job Application Tracking</h1>
+          Job Tracking
         </div>
       </Container>
     </>
   );
-}
+};
 
 export default ApplicationTracking;

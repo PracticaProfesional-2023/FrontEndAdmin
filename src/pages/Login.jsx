@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
+import CircularProgress from '@mui/material/CircularProgress';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -27,6 +28,7 @@ function Login() {
   const [showAlert, setShowAlert] = useState(false);
   const [validEmail, setValidEmail] = useState(true);
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Maneja el cambio en el campo de usuario
   function handleUserChange(event) {
@@ -47,9 +49,7 @@ function Login() {
 
   // Maneja el envío del formulario
   const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // Verifica si se ingresó un usuario y contraseña en los campos
+    event.preventDefault(); // Verifica si se ingresó un usuario y contraseña en los campos
     if (user === '' || password === '') {
       setError('Please, You must enter Email and Password');
       setShowAlert(true);
@@ -70,6 +70,8 @@ function Login() {
       return;
     }
 
+    setLoading(true); // Activa el estado de carga
+
     try {
       // Llama a la función de inicio de sesión proporcionando el correo y contraseña
       await login(user, password);
@@ -78,6 +80,8 @@ function Login() {
       setError(error.message);
       setShowAlert(true);
     }
+
+    setLoading(false); // Desactiva el estado de carga
   };
 
   return (
@@ -218,12 +222,33 @@ function Login() {
                 This is an internal account, contact your supervisor for any
                 questions
               </Typography>
+
               <Box
                 component="form"
                 noValidate
                 onSubmit={handleSubmit}
                 sx={{ mt: 1 }}
               >
+                {loading && (
+                  <div
+                    style={{
+                      position: 'fixed',
+                      top: '50%',
+                      left: '50%',
+                      width: '100%',
+                      height: '100%',
+                      transform: 'translate(-50%, -50%)',
+                      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      zIndex: 9999,
+                    }}
+                  >
+                    <CircularProgress size={80} style={{ color: 'white' }} />
+                  </div>
+                )}
+
                 <TextField
                   margin="normal"
                   required

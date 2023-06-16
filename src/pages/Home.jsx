@@ -1,52 +1,21 @@
-import React, { useContext, useState } from 'react';
-import { Box, Container, Snackbar } from '@mui/material';
-import { Alert } from '@mui/material';
-import { useAuthContext } from '../contexts/authContext';
+import React from 'react';
+import Hero from '../components/Hero';
+import Section from '../components/Section ';
+import Footer from '../components/Footer';
+import Testimonial from '../components/Testimonial';
+import AboutUs from '../components/AboutUs';
 
 const Home = () => {
-  const { isAuthenticated } = useAuthContext();
-  const [showAlert, setShowAlert] = useState(false);
-
-  const handleAlertClose = () => {
-    setShowAlert(false);
-  };
-
-  // Muestra la alerta cuando el usuario está autenticado
-  React.useEffect(() => {
-    if (isAuthenticated) {
-      setShowAlert(true);
-    }
-  }, [isAuthenticated]);
-
   return (
-    <Container sx={{ mt: 5, mb: 5 }}>
-      <div
-        style={{
-          backgroundColor: 'pink',
-          color: 'black',
-          height: '30em',
-          textAlign: 'center',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <h1>HOME</h1>
+    <>
+      <div>
+        <Hero />
+        <Section />
+        <AboutUs />
+        <Testimonial />
       </div>
-      <Snackbar
-        open={showAlert}
-        autoHideDuration={2000}
-        onClose={handleAlertClose}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-      >
-        <Alert onClose={handleAlertClose} severity="success">
-          Successful Login
-        </Alert>
-      </Snackbar>
-    </Container>
+      <Footer />
+    </>
   );
 };
 

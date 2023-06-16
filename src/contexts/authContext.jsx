@@ -4,20 +4,26 @@ import React, {
   useContext,
   useMemo,
   useState,
+  useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
-import { authenticate } from '../api/auth'; // Llamamos a la API de autenticación
+import { authenticate } from '../api/auth';
 
 const MY_AUTH_APP = 'MY_AUTH_APP_1';
 
 export const AuthContext = createContext();
 
 export function AuthContextProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    window.localStorage.getItem(MY_AUTH_APP) ?? false
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authToken, setAuthToken] = useState(null);
 
-  // Definimos la función de inicio de sesión
+  useEffect(() => {
+    const storedAuth = localStorage.getItem(MY_AUTH_APP);
+    if (storedAuth) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   const login = useCallback(async function (email, password) {
     try {
       const response = await authenticate(email, password);
@@ -25,8 +31,10 @@ export function AuthContextProvider({ children }) {
       if (response.error) {
         throw new Error('An error occurred. Please try again later.');
       } else {
-        window.localStorage.setItem(MY_AUTH_APP, true);
+        const { access_token } = response;
+        localStorage.setItem(MY_AUTH_APP, 'true');
         setIsAuthenticated(true);
+        setAuthToken(access_token);
 
         console.log(
           'Authentication saved in localStorage:',
@@ -39,8 +47,9 @@ export function AuthContextProvider({ children }) {
   }, []);
 
   const logout = useCallback(function () {
-    window.localStorage.removeItem(MY_AUTH_APP);
+    localStorage.removeItem(MY_AUTH_APP);
     setIsAuthenticated(false);
+    setAuthToken(null);
 
     console.log(
       'Authentication removed from localStorage:',
@@ -48,26 +57,38 @@ export function AuthContextProvider({ children }) {
     );
   }, []);
 
-  // Creamos el valor del contexto utilizando useMemo para evitar renderizaciones innecesarias
+  useEffect(() => {
+    const savedToken = localStorage.getItem('token');
+    if (savedToken) {
+      setAuthToken(savedToken);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (authToken) {
+      localStorage.setItem('token', authToken);
+    } else {
+      localStorage.removeItem('token');
+    }
+  }, [authToken]);
+
   const value = useMemo(
     () => ({
       login,
       logout,
       isAuthenticated,
+      authToken,
     }),
-    [login, logout, isAuthenticated]
+    [login, logout, isAuthenticated, authToken]
   );
 
-  // Renderizamos el proveedor del contexto con el valor y los hijos proporcionados
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-// Especificamos las propiedades esperadas para el componente AuthContextProvider
 AuthContextProvider.propTypes = {
   children: PropTypes.object,
 };
 
-// Definimos un hook personalizado para acceder al contexto de autenticación
 export function useAuthContext() {
   return useContext(AuthContext);
 }
