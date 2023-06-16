@@ -10,8 +10,8 @@ const columns = [
   
   {
 
-  field: 'usuario', 
-  headerName: 'Usuario', 
+  field: 'user', 
+  headerName: 'User', 
   width: 300,
   renderCell: (params) => (
     <UserCard data={params.row} />
@@ -25,7 +25,7 @@ const columns = [
   { 
   
   field: 'actions', 
-  headerName: 'Acciones', 
+  headerName: 'Actions', 
   width: 200,
   renderCell: (params) => (
 
