@@ -3,7 +3,7 @@ import { Grid, Typography, Box } from '@mui/material';
 import EngineeringOutlinedIcon from '@mui/icons-material/EngineeringOutlined';
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
-import useStyles from '../styles/styles';
+import useStyles from '../../styles/styles';
 
 const Section = () => {
   const classes = useStyles();

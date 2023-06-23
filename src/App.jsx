@@ -63,7 +63,7 @@ function App() {
           >
             <Route index element={<Home />} />
             <Route path="jobs-management" element={<Jobs />} />
-            <Route path="users" element={<UserManagement />} />
+            <Route path="users" element={<Users />} />
             <Route path="job-track" element={<Tracking />} />
             <Route path="infoUser" element={<InfoUser />} />
             <Route path="*" element={<PageNotFound />} />

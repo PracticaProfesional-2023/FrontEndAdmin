@@ -1,5 +1,11 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getUsers, updateUser, deleteUser, createUser } from '../api/usersApi';
+import {
+  getUsers,
+  updateUser,
+  deleteUser,
+  createUser,
+  updatePasswordUser,
+} from '../api/usersApi';
 import { AuthContext } from './authContext';
 
 const UserContext = createContext();
@@ -37,6 +43,13 @@ const UserContextProvider = ({ children }) => {
       console.error('Error al actualizar el usuario:', error);
     }
   };
+  const updatePasswordById = async (userId, userData) => {
+    try {
+      await updatePasswordUser(userId, userData, authToken);
+    } catch (error) {
+      console.error('Error al actualizar la Contraseña:', error);
+    }
+  };
 
   const deleteUserById = async (userId) => {
     try {
@@ -63,6 +76,7 @@ const UserContextProvider = ({ children }) => {
         updateUserById,
         deleteUserById,
         createUserInternal,
+        updatePasswordById,
       }}
     >
       {children}

@@ -19,6 +19,18 @@ const updateUser = (userId, userData, token) => {
   });
 };
 
+const updatePasswordUser = (userId, userData, token) => {
+  return axios.patch(
+    `${API_BASE_URL}/users/update-password/${userId}`,
+    userData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
 const deleteUser = (userId, token) => {
   return axios.delete(`${API_BASE_URL}/users/${userId}`, {
     headers: {
@@ -31,4 +43,4 @@ const createUser = (userData) => {
   return axios.post(`${API_BASE_URL}/auth/signup-internal`, userData);
 };
 
-export { getUsers, updateUser, createUser, deleteUser };
+export { getUsers, updateUser, createUser, deleteUser, updatePasswordUser };

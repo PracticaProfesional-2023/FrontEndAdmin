@@ -16,11 +16,14 @@ export const AuthContext = createContext();
 export function AuthContextProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authToken, setAuthToken] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const storedAuth = localStorage.getItem(MY_AUTH_APP);
-    if (storedAuth) {
+    const storedUser = localStorage.getItem('user');
+    if (storedAuth && storedUser) {
       setIsAuthenticated(true);
+      setUser(JSON.parse(storedUser));
     }
   }, []);
 
@@ -31,15 +34,12 @@ export function AuthContextProvider({ children }) {
       if (response.error) {
         throw new Error('An error occurred. Please try again later.');
       } else {
-        const { access_token } = response;
+        const { access_token, user } = response;
         localStorage.setItem(MY_AUTH_APP, 'true');
         setIsAuthenticated(true);
         setAuthToken(access_token);
-
-        console.log(
-          'Authentication saved in localStorage:',
-          localStorage.getItem(MY_AUTH_APP)
-        );
+        setUser(user);
+        localStorage.setItem('user', JSON.stringify(user)); // Guardar información del usuario en el localStorage
       }
     } catch (error) {
       throw new Error('Email or password is incorrect.');
@@ -50,11 +50,6 @@ export function AuthContextProvider({ children }) {
     localStorage.removeItem(MY_AUTH_APP);
     setIsAuthenticated(false);
     setAuthToken(null);
-
-    console.log(
-      'Authentication removed from localStorage:',
-      localStorage.getItem(MY_AUTH_APP)
-    );
   }, []);
 
   useEffect(() => {
@@ -78,8 +73,9 @@ export function AuthContextProvider({ children }) {
       logout,
       isAuthenticated,
       authToken,
+      user,
     }),
-    [login, logout, isAuthenticated, authToken]
+    [login, logout, isAuthenticated, authToken, user]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
