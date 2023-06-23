@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Typography, Button, Box } from '@mui/material';
-import bestTeams from '../assets/bestTeams.jpg';
-import useStyles from '../styles/styles';
+import bestTeams from '../../assets/bestTeams.jpg';
+import useStyles from '../../styles/styles';
 import { NavLink } from 'react-router-dom';
 
 const AboutUs = () => {

@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import CircularProgress from '@mui/material/CircularProgress';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -17,6 +17,7 @@ import Typography from '@mui/material/Typography';
 import validator from 'validator';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
+import { InputAdornment, IconButton } from '@mui/material';
 
 const defaultTheme = createTheme();
 
@@ -25,6 +26,7 @@ function Login() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [validEmail, setValidEmail] = useState(true);
   const [acceptTerms, setAcceptTerms] = useState(false);
@@ -40,6 +42,10 @@ function Login() {
   function handlePasswordChange(event) {
     setPassword(event.target.value);
   }
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
 
   // Valida el formato del correo electrónico
   function validateEmail(email) {
@@ -267,9 +273,21 @@ function Login() {
                   onChange={handlePasswordChange}
                   name="password"
                   label="Password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   id="password"
                   autoComplete="current-password"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleTogglePasswordVisibility}
+                          edge="end"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <FormControlLabel
                   control={

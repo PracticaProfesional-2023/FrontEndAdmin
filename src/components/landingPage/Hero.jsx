@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Typography, Button, Box } from '@mui/material';
-import myteam from '../assets/myteam.jpg';
-import useStyles from '../styles/styles';
+import myteam from '../../assets/myteam.jpg';
+import useStyles from '../../styles/styles';
 import { NavLink } from 'react-router-dom';
 
 const Hero = () => {

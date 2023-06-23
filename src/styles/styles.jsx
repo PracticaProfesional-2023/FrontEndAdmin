@@ -12,7 +12,7 @@ const styles = (theme) => {
       },
     },
     form: {
-      marginTop: '30px',
+      marginTop: '20px',
     },
     formHeading: {
       textAlign: 'center',
@@ -23,6 +23,7 @@ const styles = (theme) => {
       minHeight: '600px',
       alignItems: 'center',
       justifyContent: 'center',
+      marginBottom: '-60px',
     },
     gridContainer: {
       display: 'flex',
@@ -36,7 +37,7 @@ const styles = (theme) => {
       minHeight: '400px',
       alignItems: 'center',
       justifyContent: 'center',
-      margin: '30px 0px 50px 0px',
+      margin: '20px 0px 40px 0px',
     },
     aboutUsSubtitle: {
       opacity: '0.7',
@@ -68,29 +69,23 @@ const styles = (theme) => {
       borderRadius: '10px',
       margin: '10px !important',
     },
-    inputField: {
-      marginBottom: '20px !important',
-    },
-    textArea: {
-      width: '100%',
-      marginBottom: '20px',
-      fontSize: '16px',
-      padding: '10px',
-    },
+
     footerContainer: {
       display: 'flex',
       alignItems: 'center',
       miHeight: '10vh',
       padding: '20px',
       justifyContent: 'center',
-      backgroundColor: '#f2f0f1',
+      backgroundColor: '#24406c',
       flexDirection: 'column',
     },
     footerText: {
       paddingBottom: '10px',
+      color: 'white',
     },
     footerDate: {
       opacity: '0.4',
+      color: 'white',
     },
     testimonialCard: {
       backgroundColor: '#fff',
