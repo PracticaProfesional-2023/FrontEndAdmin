@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getJobs, deleteJob, createJob } from '../api/jobsApi';
+import { getJobs, deleteJob, createJob, updateJob } from '../api/jobsApi';
 import { AuthContext } from './authContext';
 
 const JobContext = createContext();
@@ -23,6 +23,20 @@ const JobContextProvider = ({ children }) => {
       fetchJobs();
     }
   }, [authToken]);
+
+  const updateJobById = async (jobId, jobData) => {
+    try {
+      const response = await updateUser(jobId, jobData, authToken);
+      setUsers((prevJobs) => {
+        const updatedJobs = prevUsers.map((job) =>
+          job.id === jobId ? response.data.job : job
+        );
+        return updatedJobs;
+      });
+    } catch (error) {
+      console.error('Error al actualizar el Job:', error);
+    }
+  };
 
   const deleteJobById = async (jobId) => {
     try {
@@ -58,6 +72,7 @@ const JobContextProvider = ({ children }) => {
         jobs,
         createJobInternal,
         deleteJobById,
+        updateJobById,
       }}
     >
       {children}

@@ -26,4 +26,12 @@ const createJob = (jobData, token) => {
   });
 };
 
-export { getJobs, deleteJob, createJob };
+const updateJob = (jobId, jobData, token) => {
+  return axios.patch(`${API_BASE_URL}/job-positions/${jobId}`, jobData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export { getJobs, deleteJob, createJob, updateJob };
