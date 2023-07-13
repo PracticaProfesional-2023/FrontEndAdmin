@@ -12,6 +12,7 @@ import PublicRoute from './components/router/PublicRoute';
 import PrivateRoute from './components/router/PrivateRoute';
 import { UserContextProvider } from './contexts/UserContext';
 import { JobContextProvider } from './contexts/JobContext'; // Agregado
+import { JobTrackingContextProvider } from './contexts/trackingContext';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +28,7 @@ function App() {
   return (
     <UserContextProvider>
       <JobContextProvider>
+      <JobTrackingContextProvider>
         {' '}
         {/* Agregado */}
         <>
@@ -74,6 +76,7 @@ function App() {
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </>
+        </JobTrackingContextProvider>{' '}
       </JobContextProvider>{' '}
       {/* Agregado */}
     </UserContextProvider>

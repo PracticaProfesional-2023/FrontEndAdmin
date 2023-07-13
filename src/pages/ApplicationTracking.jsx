@@ -13,8 +13,7 @@ import {
   Step,
   StepLabel,
 } from '@mui/material';
-import { UserContext } from '../contexts/UserContext';
-import { JobContext } from '../contexts/JobContext';
+import { TrackingContext } from '../contexts/trackingContext';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import UpdateIcon from '@mui/icons-material/Update';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -24,44 +23,15 @@ import AddIcon from '@mui/icons-material/Add';
 import { Snackbar, Alert, CircularProgress } from '@mui/material';
 
 import { DataGrid } from '@mui/x-data-grid';
-import { AuthContext } from '../contexts/authContext';
 
 function ApplicationTracking() {
-  // Modal
+
   const [searchValue, setSearchValue] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-
-  // Alertas y Loading
-  const [successAlertOpen, setSuccessAlertOpen] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  // Para utilizar UserContext
-  const {
-    users,
-    updateUserById,
-    deleteUserById,
-    createUserInternal,
-    updatePasswordById,
-  } = useContext(UserContext);
-
-
 
     // Para utilizar JobContext
     const {
-      jobs,
-    } = useContext(JobContext);
-  
-  // Modales para Actualizar, Crear y Borrar
-  const [openCreateModal, setOpenCreateModal] = useState(false);
-  const [openUpdateModal, setOpenUpdateModal] = useState(false);
-  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  // Estado para Borrar usuario por Id
-  const [deleteUserId, setDeleteUserId] = useState(null);
-  // Seleccionar usuario
-  const [selectedUser, setSelectedUser] = useState(null);
-  const { user, job } = useContext(AuthContext);
-  const steps = ['Applied','Accepted', 'Rejected'];
+      jobPositions,
+    } = useContext(TrackingContext);
 
   // Columnas
   const columns = [
@@ -210,44 +180,51 @@ renderCell: (params) => {
 
 //PARTE PARA JOBS - PRUEBA//////////////////////////////////////////////////////
 
-const rowsJobs = useMemo(() => {
-  if (searchValue === '') {
-    return jobs.map((job) => ({
-      jobTitle: job.jobTitle,
-    }));
-  } else {
-    return jobs
-      .filter(
-        (job) =>
-          job.jobTitle &&
-          job.jobTitle.toLowerCase().includes(searchValue.toLowerCase())
-      )
-      .map((job) => ({
-        jobTitle: job.jobTitle,
+  // Rows
+
+  const rows = useMemo(() => {
+    if (searchValue === '') {
+      return jobPositions.map((jobApplications) => ({
+        id: jobApplications.id,
+        names: jobApplications.candidate.names,
+        description: jobApplications.jobPosition.description,
+        actions: `Actions ${jobApplications.id}`,
       }));
-  }
-}, [jobs, searchValue]);
+    } else {
+      return jobPositions
+        .filter(
+          (jobApplications) =>
+            jobApplications.jobPosition.description &&
+            jobApplications.jobPosition.description.toLowerCase().includes(searchValue.toLowerCase())
+        )
+        .map((jobApplications) => ({
+          id: jobApplications.id,
+          names: jobApplications.candidate.names,
+          description: jobApplications.jobPosition.description,
+          actions: `Actions ${jobApplications.id}`,
+        }));
+    }
+  }, [jobPositions, searchValue]);
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 
 
 
   // Obtén el ID del usuario logueado
+/*
   const loggedInUserId = user.id;
-  const loggedInJobId = job && job.id;
 
   // Filtra el usuario logueado de la lista de usuarios
   const filteredUsers = users.filter((user) => user.id !== loggedInUserId);
-  const filteredJobs = jobs.filter((job) => job.id !== loggedInJobId);
   // Rows
   const rows = useMemo(() => {
     if (searchValue === '') {
       return filteredUsers.map((user) => {
-        const titleJob = jobs.find((job) => job.id === loggedInJobId);
         return{
           id: user.id,
           user: user.name,
-          titleJob: titleJob ? titleJob.jobTitle : '',
           actions: `Actions ${user.id}`,
         }
         
@@ -258,17 +235,17 @@ const rowsJobs = useMemo(() => {
           user.name.toLowerCase().includes(searchValue.toLowerCase())
         )
         .map((user) => {
-          const titleJob = jobs.find((job) => job.id === loggedInJobId);
           return{
             id: user.id,
             user: user.name,
-            titleJob: titleJob ? titleJob.jobTitle : '',
             actions: `Actions ${user.id}`,
           }
           
         });
     }
   }, [filteredUsers, searchValue]);
+
+*/
 
   //Theme
   const defaultTheme = createTheme({
