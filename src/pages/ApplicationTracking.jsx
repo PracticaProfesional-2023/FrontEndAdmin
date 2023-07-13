@@ -88,8 +88,8 @@ function ApplicationTracking() {
     },
     { field: 'jobTitle', headerName: 'Job Title', width: 300 },
     {
-      field: 'tracking',
-      headerName: 'Tracking',
+      field: 'actions',
+      headerName: 'Actions',
       width: 600,
       // ...
 
@@ -248,7 +248,7 @@ const rowsJobs = useMemo(() => {
           id: user.id,
           user: user.name,
           titleJob: titleJob ? titleJob.jobTitle : '',
-          tracking: `Tracking ${user.id}`,
+          actions: `Actions ${user.id}`,
         }
         
       });
@@ -263,7 +263,7 @@ const rowsJobs = useMemo(() => {
             id: user.id,
             user: user.name,
             titleJob: titleJob ? titleJob.jobTitle : '',
-            tracking: `Tracking ${user.id}`,
+            actions: `Actions ${user.id}`,
           }
           
         });
