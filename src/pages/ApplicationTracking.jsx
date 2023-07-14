@@ -13,7 +13,7 @@ import {
   Step,
   StepLabel,
 } from '@mui/material';
-import { TrackingContext } from '../contexts/trackingContext';
+import { JobTrackingContext } from '../contexts/trackingContext';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import UpdateIcon from '@mui/icons-material/Update';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -26,12 +26,14 @@ import { DataGrid } from '@mui/x-data-grid';
 
 function ApplicationTracking() {
 
+  const [successAlertOpen, setSuccessAlertOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const [searchValue, setSearchValue] = useState('');
 
     // Para utilizar JobContext
-    const {
-      jobPositions,
-    } = useContext(TrackingContext);
+    const { jobApplications } = useContext(JobTrackingContext);
 
   // Columnas
   const columns = [
@@ -184,14 +186,15 @@ renderCell: (params) => {
 
   const rows = useMemo(() => {
     if (searchValue === '') {
-      return jobPositions.map((jobApplications) => ({
+      console.log(jobApplications)
+      return jobApplications.map((jobApplications) => ({
         id: jobApplications.id,
         names: jobApplications.candidate.names,
         description: jobApplications.jobPosition.description,
         actions: `Actions ${jobApplications.id}`,
       }));
     } else {
-      return jobPositions
+      return jobApplications
         .filter(
           (jobApplications) =>
             jobApplications.jobPosition.description &&
@@ -204,7 +207,7 @@ renderCell: (params) => {
           actions: `Actions ${jobApplications.id}`,
         }));
     }
-  }, [jobPositions, searchValue]);
+  }, [jobApplications, searchValue]);
 
 
 

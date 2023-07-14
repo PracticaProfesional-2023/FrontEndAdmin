@@ -29,7 +29,6 @@ function App() {
     <UserContextProvider>
       <JobContextProvider>
       <JobTrackingContextProvider>
-        {' '}
         {/* Agregado */}
         <>
           {isLoading && (
@@ -76,7 +75,7 @@ function App() {
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </>
-        </JobTrackingContextProvider>{' '}
+        </JobTrackingContextProvider>
       </JobContextProvider>{' '}
       {/* Agregado */}
     </UserContextProvider>

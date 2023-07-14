@@ -2,10 +2,10 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { getJobsPositions } from '../api/trackingApi';
 import { AuthContext } from './authContext';
 
-const  TrackingContext = createContext();
+const  JobTrackingContext = createContext();
 
 const JobTrackingContextProvider = ({ children }) => {
-  const [jobsPositions, setJobsPositions] = useState([]);
+  const [applications, setApplications] = useState([]);
   const authContext = useContext(AuthContext);
   const { authToken } = authContext;
 
@@ -13,7 +13,9 @@ const JobTrackingContextProvider = ({ children }) => {
     const fetchJobsPositions = async () => {
       try {
         const response = await getJobsPositions(authToken);
-        setJobsPositions(response.data.jobPositions);
+        console.log(response.data.jobApplications)
+        setApplications(response.data.jobApplications);
+        console.log(applications)
       } catch (error) {
         console.error('Error al obtener las Plazas:', error);
       }
@@ -27,14 +29,15 @@ const JobTrackingContextProvider = ({ children }) => {
   
 
   return (
-    <TrackingContext.Provider
+    
+    <JobTrackingContext.Provider
       value={{
-        jobsPositions,
+        applications,
       }}
     >
       {children}
-    </TrackingContext.Provider>
+    </JobTrackingContext.Provider>
   );
 };
 
-export { TrackingContext, JobTrackingContextProvider };
+export { JobTrackingContext, JobTrackingContextProvider };
