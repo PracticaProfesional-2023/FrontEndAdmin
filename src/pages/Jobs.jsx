@@ -262,7 +262,6 @@ function Jobs() {
       })
       .finally(() => {
         setLoading(false);
-        window.location.reload();
       });
   };
 
