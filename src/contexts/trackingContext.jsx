@@ -14,7 +14,6 @@ const JobTrackingContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchJobsPositions = async () => {
       try {
-        console.log(authToken);
         const response = await getJobsPositions(KEY_APP);
         setApplications(response.data.jobApplications);
       } catch (error) {
@@ -22,10 +21,10 @@ const JobTrackingContextProvider = ({ children }) => {
       }
     };
 
-    if (authToken) {
+    if (KEY_APP) {
       fetchJobsPositions();
     }
-  }, [authToken]);
+  }, [KEY_APP]);
 
   return (
     <JobTrackingContext.Provider

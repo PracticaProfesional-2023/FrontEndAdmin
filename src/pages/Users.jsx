@@ -127,7 +127,7 @@ function Users() {
       return filteredUsers.map((user) => ({
         id: user.id,
         user: user.name,
-        email: user.email,
+        email: user.code,
         actions: `Actions ${user.id}`,
       }));
     } else {
@@ -143,6 +143,8 @@ function Users() {
         }));
     }
   }, [filteredUsers, searchValue]);
+
+  const sortedRows = [...rows].sort((a, b) => b.id - a.id);
 
   //Theme
   const defaultTheme = createTheme({
@@ -198,7 +200,7 @@ function Users() {
   // Data para Actualizar Usuario
   const [updateUserData, setUpdateUserData] = useState({
     id: '',
-    email: '',
+    code: '',
     name: '',
     newPassword: '',
   });
@@ -215,7 +217,7 @@ function Users() {
     deleteUserById(deleteUserId)
       .then(() => {
         setOpenConfirmationModal(false);
-        showSuccessAlert('Usuario eliminado exitosamente');
+        showSuccessAlert('User deleted successfully');
         setLoading(false);
       })
       .catch((error) => {
@@ -254,7 +256,7 @@ function Users() {
           name: '',
           password: '',
         });
-        showSuccessAlert('Usuario creado exitosamente');
+        showSuccessAlert('User created successfully');
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -271,7 +273,7 @@ function Users() {
     setOpenUpdateModal(true);
     setUpdateUserData({
       id: selectedUserData.id,
-      email: selectedUserData.email,
+      code: selectedUserData.code,
       name: selectedUserData.name,
       newPassword: '',
     });
@@ -292,7 +294,7 @@ function Users() {
 
     const updatedUserData = {
       id: selectedUser,
-      email: updateUserData.email,
+      code: updateUserData.code,
       name: updateUserData.name,
     };
 
@@ -308,12 +310,12 @@ function Users() {
           setOpenUpdateModal(false);
           setUpdateUserData({
             id: '',
-            email: '',
+            code: '',
             name: '',
             newPassword: '',
           });
           setSelectedUser(null);
-          showSuccessAlert('Usuario actualizado exitosamente');
+          showSuccessAlert('User has been updated');
         })
         .catch((error) => {
           console.error('Error:', error);
@@ -327,12 +329,12 @@ function Users() {
           setOpenUpdateModal(false);
           setUpdateUserData({
             id: '',
-            email: '',
+            code: '',
             name: '',
             newPassword: '',
           });
           setSelectedUser(null);
-          showSuccessAlert('Usuario actualizado exitosamente');
+          showSuccessAlert('User has been updated');
         })
         .catch((error) => {
           console.error('Error:', error);
@@ -459,7 +461,7 @@ function Users() {
                 </div>
               ) : (
                 <DataGrid
-                  rows={rows}
+                  rows={sortedRows}
                   columns={columns.filter((column) => column.field !== 'id')}
                   getRowId={(row) => row.id}
                   autoHeight
@@ -621,9 +623,9 @@ function Users() {
                     label="Email"
                     fullWidth
                     variant="filled"
-                    value={updateUserData.email}
+                    value={updateUserData.code}
                     onChange={handleFieldChangeUpdate}
-                    name="email"
+                    name="code"
                   />
                 </Grid>
 

@@ -19,7 +19,7 @@ function ApplicationTracking() {
   const [successAlertOpen, setSuccessAlertOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [successSeverity, setSuccessSeverity] = useState('');
+  const [successSeverity, setSuccessSeverity] = useState('info');
 
   const [searchValue, setSearchValue] = useState('');
 
