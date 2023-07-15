@@ -39,7 +39,8 @@ const JobContextProvider = ({ children }) => {
       const response = await createJob(jobData, authToken);
       const newJobPosition = response.data.createdJobPosition;
       setJobs((prevJobs) => {
-        return [...prevJobs, newJobPosition];
+        return [...prevJobs, { ...newJobPosition, name: jobData.name }];
+        // Agregamos el campo "name" del objeto jobData a newJobPosition
       });
     } catch (error) {
       if (error.response && error.response.data) {
