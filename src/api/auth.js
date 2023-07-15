@@ -1,5 +1,5 @@
 export async function authenticate(email, password) {
-  const BASE_URL = 'https://helpful-woolens-elk.cyclic.app';
+  const BASE_URL = 'http://173.254.242.213:3000';
   try {
     // Realizamos una solicitud POST a la API con la URL y los datos de correo y contraseña proporcionados
     const response = await fetch(`${BASE_URL}/auth/signin-internal`, {

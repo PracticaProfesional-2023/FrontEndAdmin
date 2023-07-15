@@ -32,8 +32,7 @@ function Jobs() {
   const [loading, setLoading] = useState(false);
 
   // Para utilizar JobContext
-  const { jobs, createJobInternal, deleteJobById, updateJobById } =
-    useContext(JobContext);
+  const { jobs, createJobInternal, deleteJobById } = useContext(JobContext);
   // Modales para Actualizar, Crear y Borrar
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
@@ -134,6 +133,7 @@ function Jobs() {
     }
   }, [jobs, searchValue]);
 
+  const sortedRows = [...rows].sort((a, b) => b.id - a.id);
   //Theme
   const defaultTheme = createTheme({
     palette: {
@@ -161,12 +161,15 @@ function Jobs() {
 
   // Avatar de cada uno
   const getInitials = (name) => {
-    const names = name.split(' ');
-    let initials = '';
-    names.forEach((name) => {
-      initials += name.charAt(0);
-    });
-    return initials.slice(0, 2).toUpperCase();
+    if (name && typeof name === 'string') {
+      const names = name.split(' ');
+      let initials = '';
+      names.forEach((name) => {
+        initials += name.charAt(0);
+      });
+      return initials.slice(0, 2).toUpperCase();
+    }
+    return 'PE';
   };
 
   // Handle para Busqueda de Plazas
@@ -209,7 +212,7 @@ function Jobs() {
     deleteJobById(deleteJobId)
       .then(() => {
         setOpenConfirmationModal(false);
-        showSuccessAlert('Plaza eliminado exitosamente');
+        showSuccessAlert('Job Deleted Successfully');
         setLoading(false);
       })
       .catch((error) => {
@@ -252,13 +255,14 @@ function Jobs() {
           positions: 0,
           comments: '',
         });
-        showSuccessAlert('Plaza creada exitosamente');
+        showSuccessAlert('Job created successfully');
       })
       .catch((error) => {
         console.error('Error:', error);
       })
       .finally(() => {
         setLoading(false);
+        window.location.reload();
       });
   };
 
@@ -311,29 +315,10 @@ function Jobs() {
       positions: updateJobData.positions,
       comments: updateJobData.comments,
     };
-
-    updateUserById(selectedJob, updatedJobData)
-      .then(() => {
-        setOpenUpdateModal(false);
-        setUpdateUserData({
-          id: '',
-          name: '',
-          description: '',
-          state: '',
-          startDate: '',
-          endDate: '',
-          positions: 0,
-          comments: '',
-        });
-        setSelectedJob(null);
-        showSuccessAlert('Plaza actualizada exitosamente');
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    setOpenUpdateModal(false);
+    setLoading(false);
+    setSelectedJob(null);
+    showSuccessAlert('Job updated successfully');
   };
 
   return (
@@ -452,7 +437,7 @@ function Jobs() {
                 </div>
               ) : (
                 <DataGrid
-                  rows={rows}
+                  rows={sortedRows}
                   getRowId={(row) => row.id}
                   columns={columns.filter((column) => column.field !== 'id')}
                   autoHeight
@@ -549,13 +534,13 @@ function Jobs() {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={4}>
                   <Typography variant="caption" color="textSecondary">
-                    Enter job name:
+                    Job name:
                   </Typography>
                   <TextField
                     variant="outlined"
                     name="name"
                     fullWidth
-                    required
+                    disabled
                     value={updateJobData.name}
                     onChange={handleFieldChangeUpdate}
                     sx={{
@@ -572,13 +557,13 @@ function Jobs() {
                 </Grid>
                 <Grid item xs={12} sm={8}>
                   <Typography variant="caption" color="textSecondary">
-                    Enter Job Description:
+                    Job Description:
                   </Typography>
                   <TextField
                     variant="outlined"
                     name="description"
                     fullWidth
-                    required
+                    disabled
                     value={updateJobData.description}
                     onChange={handleFieldChangeUpdate}
                     sx={{
@@ -595,7 +580,7 @@ function Jobs() {
                 </Grid>
                 <Grid item xs={12} sm={3}>
                   <Typography variant="caption" color="textSecondary">
-                    Enter Job Status:
+                    Job Status:
                   </Typography>
                   <Select
                     variant="outlined"
@@ -616,19 +601,19 @@ function Jobs() {
                       },
                     }}
                   >
-                    <MenuItem value="Open">Open</MenuItem>
-                    <MenuItem value="Closed">Closed</MenuItem>
+                    <MenuItem value="ACT">Open</MenuItem>
+                    <MenuItem value="INA">Closed</MenuItem>
                   </Select>
                 </Grid>
                 <Grid item xs={12} sm={2}>
                   <Typography variant="caption" color="textSecondary">
-                    Enter job openings:
+                    Job openings:
                   </Typography>
                   <TextField
                     variant="outlined"
                     name="positions"
                     fullWidth
-                    required
+                    disabled
                     type="number"
                     value={updateJobData.positions}
                     onChange={handleFieldChangeUpdate}
@@ -646,13 +631,13 @@ function Jobs() {
                 </Grid>
                 <Grid item xs={12} sm={3.5}>
                   <Typography variant="caption" color="textSecondary">
-                    Enter job Start date:
+                    Job Start date:
                   </Typography>
                   <TextField
                     variant="outlined"
                     name="startDate"
                     fullWidth
-                    required
+                    disabled
                     type="datetime-local"
                     value={updateJobData.startDate}
                     onChange={handleFieldChangeUpdate}
@@ -670,13 +655,13 @@ function Jobs() {
                 </Grid>
                 <Grid item xs={12} sm={3.5}>
                   <Typography variant="caption" color="textSecondary">
-                    Enter job End date:
+                    Job End date:
                   </Typography>
                   <TextField
                     variant="outlined"
                     name="endDate"
                     fullWidth
-                    required
+                    disabled
                     type="datetime-local"
                     value={updateJobData.endDate}
                     onChange={handleFieldChangeUpdate}
@@ -694,7 +679,7 @@ function Jobs() {
                 </Grid>
                 <Grid item xs={12} sm={12}>
                   <Typography variant="caption" color="textSecondary">
-                    Enter additional job comments:
+                    Additional job comments:
                   </Typography>
                   <TextField
                     variant="outlined"
@@ -702,7 +687,7 @@ function Jobs() {
                     fullWidth
                     multiline
                     rows={2}
-                    required
+                    disabled
                     value={updateJobData.comments}
                     onChange={handleFieldChangeUpdate}
                     sx={{
@@ -739,7 +724,7 @@ function Jobs() {
                       marginBottom: '20px',
                     }}
                   >
-                    <span style={{ marginRight: '4px' }}>Update Job</span>
+                    <span style={{ marginRight: '4px' }}>Update Status</span>
                     <Update sx={{ fontSize: '20px', color: 'white' }} />
                   </Button>
                 </Grid>
@@ -836,7 +821,6 @@ function Jobs() {
                     variant="outlined"
                     name="name"
                     fullWidth
-                    required
                     value={newJobData.name}
                     onChange={handleFieldChange}
                     sx={{
@@ -899,8 +883,8 @@ function Jobs() {
                       },
                     }}
                   >
-                    <MenuItem value="Open">Open</MenuItem>
-                    <MenuItem value="Closed">Closed</MenuItem>
+                    <MenuItem value="ACT">Open</MenuItem>
+                    <MenuItem value="INA">Closed</MenuItem>
                   </Select>
                 </Grid>
                 <Grid item xs={12} sm={2}>

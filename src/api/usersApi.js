@@ -1,7 +1,7 @@
 // usersApi.js
 import axios from 'axios';
 
-const API_BASE_URL = 'https://helpful-woolens-elk.cyclic.app';
+const API_BASE_URL = 'http://173.254.242.213:3000';
 
 const getUsers = (token) => {
   return axios.get(`${API_BASE_URL}/users`, {

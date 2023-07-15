@@ -11,7 +11,8 @@ import PageNotFound from './pages/PageNotFound';
 import PublicRoute from './components/router/PublicRoute';
 import PrivateRoute from './components/router/PrivateRoute';
 import { UserContextProvider } from './contexts/UserContext';
-import { JobContextProvider } from './contexts/JobContext'; // Agregado
+import { JobContextProvider } from './contexts/JobContext';
+import { JobTrackingContextProvider } from './contexts/trackingContext';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,55 +28,54 @@ function App() {
   return (
     <UserContextProvider>
       <JobContextProvider>
-        {' '}
-        {/* Agregado */}
-        <>
-          {isLoading && (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-              }}
-            >
-              <CircularProgress />
-            </div>
-          )}
+        <JobTrackingContextProvider>
+          <>
+            {isLoading && (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '100vh',
+                }}
+              >
+                <CircularProgress />
+              </div>
+            )}
 
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <PublicRoute
-                  startLoading={startLoading}
-                  stopLoading={stopLoading}
-                />
-              }
-            >
-              <Route index element={<Login />} />
-            </Route>
-            <Route
-              path="/hirejob/*"
-              element={
-                <PrivateRoute
-                  startLoading={startLoading}
-                  stopLoading={stopLoading}
-                />
-              }
-            >
-              <Route index element={<Home />} />
-              <Route path="jobs-management" element={<Jobs />} />
-              <Route path="users" element={<Users />} />
-              <Route path="job-track" element={<Tracking />} />
-              <Route path="infoUser" element={<InfoUser />} />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <PublicRoute
+                    startLoading={startLoading}
+                    stopLoading={stopLoading}
+                  />
+                }
+              >
+                <Route index element={<Login />} />
+              </Route>
+              <Route
+                path="/hirejob/*"
+                element={
+                  <PrivateRoute
+                    startLoading={startLoading}
+                    stopLoading={stopLoading}
+                  />
+                }
+              >
+                <Route index element={<Home />} />
+                <Route path="jobs-management" element={<Jobs />} />
+                <Route path="users" element={<Users />} />
+                <Route path="job-track" element={<Tracking />} />
+                <Route path="infoUser" element={<InfoUser />} />
+                <Route path="*" element={<PageNotFound />} />
+              </Route>
               <Route path="*" element={<PageNotFound />} />
-            </Route>
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
-        </>
-      </JobContextProvider>{' '}
-      {/* Agregado */}
+            </Routes>
+          </>
+        </JobTrackingContextProvider>
+      </JobContextProvider>
     </UserContextProvider>
   );
 }

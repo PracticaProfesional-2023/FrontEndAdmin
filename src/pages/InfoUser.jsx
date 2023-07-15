@@ -61,7 +61,7 @@ const InfoUser = () => {
                   gutterBottom
                 >
                   <Typography style={{ fontWeight: 'bold' }}>Email:</Typography>{' '}
-                  {user.email}
+                  {user.code}
                 </Typography>
               </>
             ) : (

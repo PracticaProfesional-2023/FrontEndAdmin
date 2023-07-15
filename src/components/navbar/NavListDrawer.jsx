@@ -20,7 +20,13 @@ function NavListDrawer({ onClick, navArrayLinks, setOpen }) {
     >
       <nav aria-label="main mailbox folders">
         <List>
-          <ListItem style={{ textAlign: 'center', justifyContent: 'center' }}>
+          <ListItem
+            style={{
+              textAlign: 'center',
+              justifyContent: 'center',
+              marginBottom: '20px',
+            }}
+          >
             <ListItemButton
               to="/hirejob"
               component={NavLink}
@@ -41,21 +47,6 @@ function NavListDrawer({ onClick, navArrayLinks, setOpen }) {
               />
             </ListItemButton>
           </ListItem>
-          <ListItem>
-            <TextField
-              fullWidth
-              color="secondary"
-              id="outlined-basic"
-              size="small"
-              label="Search"
-              variant="outlined"
-              sx={{ input: { color: '#fff', backgroundColor: 'transparent' } }}
-              InputLabelProps={{
-                style: { color: '#fff' },
-              }}
-            />
-          </ListItem>
-
           {navArrayLinks.map((item) => (
             <ListItem disablePadding key={item.title}>
               <ListItemButton
