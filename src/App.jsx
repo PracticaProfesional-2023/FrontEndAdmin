@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { CircularProgress } from '@mui/material';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Jobs from './pages/Jobs';
-import Users from './pages/Users';
-import Tracking from './pages/ApplicationTracking';
-import InfoUser from './pages/InfoUser';
-import PageNotFound from './pages/PageNotFound';
-import PublicRoute from './components/router/PublicRoute';
-import PrivateRoute from './components/router/PrivateRoute';
-import { UserContextProvider } from './contexts/UserContext';
-import { JobContextProvider } from './contexts/JobContext';
-import { JobTrackingContextProvider } from './contexts/trackingContext';
+import React, { useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Jobs from "./pages/Jobs";
+import Users from "./pages/Users";
+import Tracking from "./pages/ApplicationTracking";
+import InfoUser from "./pages/InfoUser";
+import PageNotFound from "./pages/PageNotFound";
+import PublicRoute from "./components/router/PublicRoute";
+import PrivateRoute from "./components/router/PrivateRoute";
+import { UserContextProvider } from "./contexts/UserContext";
+import { JobContextProvider } from "./contexts/JobContext";
+import { JobTrackingContextProvider } from "./contexts/trackingContext";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,16 +33,15 @@ function App() {
             {isLoading && (
               <div
                 style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: '100vh',
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100vh",
                 }}
               >
                 <CircularProgress />
               </div>
             )}
-
             <Routes>
               <Route
                 path="/"
@@ -56,7 +55,7 @@ function App() {
                 <Route index element={<Login />} />
               </Route>
               <Route
-                path="/hirejob/*"
+                path="/hirejob"
                 element={
                   <PrivateRoute
                     startLoading={startLoading}

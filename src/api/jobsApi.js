@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://173.254.242.213:3000';
+const API_BASE_URL = 'http://104.238.249.113:3000';
 
 const getJobs = (token) => {
   return axios.get(`${API_BASE_URL}/job-positions`, {
